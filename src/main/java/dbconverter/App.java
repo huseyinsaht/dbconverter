@@ -20,7 +20,7 @@ public class App {
 
 	private final static Pattern cliArgPattern = Pattern.compile("^-([^=\\s]+)=(\\S*)$");
 
-	private static int[] FEMS = new int[] { 791, 892, 1041, 1081 };
+	private static int[] FEMS = new int[] { 1167 };
 //	public final static Types TYPE = Types.DESS;
 	public final static Types TYPE = Types.OPENEMS_V1;
 

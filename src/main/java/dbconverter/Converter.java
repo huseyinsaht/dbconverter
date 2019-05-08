@@ -42,11 +42,16 @@ public class Converter {
 	private final static String CHARGE_POWER = "%s/ChargePower";
 	private final static String TOTAL_BATTERY_CHARGE_ENERGY = "%s/TotalBatteryChargeEnergy";
 	private final static String TOTAL_BATTERY_DISCHARGE_ENERGY = "%s/TotalBatteryDischargeEnergy";
+	private final static String BATTERY_ALLOWED_CHARGING = "%s/BatteryAllowedCharging";
+	private final static String DISCHARGED_ENERGY = "%s/DischargedEnergy";
 	private final static String ACTIVE_ENERGY_L1 = "%s/ActiveEnergyL1";
 	private final static String ACTIVE_ENERGY_L2 = "%s/ActiveEnergyL2";
 	private final static String ACTIVE_ENERGY_L3 = "%s/ActiveEnergyL3";
 	private final static String ACTIVE_POSITIVE_ENERGY = "%s/ActivePositiveEnergy";
 	private final static String ACTIVE_NEGATIVE_ENERGY = "%s/ActiveNegativeEnergy";
+	private final static String BUY_FROM_GRID_ENERGY = "%s/BuyFromGridEnergy";
+	private final static String SELL_TO_GRID_ENERGY = "%s/SellToGridEnergy";
+	private final static String ENERGY = "%s/Energy";
 
 	public final static String DESS_METER0_ACTIVE_POWER_L1 = "PCS1_Grid_Phase1_Active_Power";
 	public final static String DESS_METER0_ACTIVE_POWER_L2 = "PCS2_Grid_Phase2_Active_Power";
@@ -92,6 +97,8 @@ public class Converter {
 			result.add(String.format(ACTIVE_POWER_L3, id));
 			result.add(String.format(TOTAL_BATTERY_CHARGE_ENERGY, id));
 			result.add(String.format(TOTAL_BATTERY_DISCHARGE_ENERGY, id));
+			result.add(String.format(BATTERY_ALLOWED_CHARGING, id));
+			result.add(String.format(DISCHARGED_ENERGY, id));
 		}
 
 		for (String id : new String[] { "meter0", "meter1", "meter2" }) {
@@ -106,6 +113,9 @@ public class Converter {
 			result.add(String.format(ACTIVE_ENERGY_L3, id));
 			result.add(String.format(ACTIVE_POSITIVE_ENERGY, id));
 			result.add(String.format(ACTIVE_NEGATIVE_ENERGY, id));
+			result.add(String.format(BUY_FROM_GRID_ENERGY, id));
+			result.add(String.format(SELL_TO_GRID_ENERGY, id));
+			result.add(String.format(ENERGY, id));
 		}
 
 		for (String id : new String[] { "charger0", "charger1" }) {
@@ -315,6 +325,7 @@ public class Converter {
 
 			case "io.openems.impl.device.pro.FeneconProEss":
 			case "Fenecon.Pro.Ess":
+			case "Fenecon.Mini.Ess":
 				socs.add(getValue(input, String.format(SOC, entry.getKey())));
 				break;
 			default:
@@ -355,6 +366,7 @@ public class Converter {
 			case "io.openems.impl.device.minireadonly.FeneconMiniEss":
 			case "io.openems.impl.device.pro.FeneconProEss":
 			case "Fenecon.Pro.Ess":
+			case "Fenecon.Mini.Ess":
 				sum = add(sum, getValue(input, String.format(ACTIVE_POWER_L1, entry.getKey())));
 				sum = add(sum, getValue(input, String.format(ACTIVE_POWER_L2, entry.getKey())));
 				sum = add(sum, getValue(input, String.format(ACTIVE_POWER_L3, entry.getKey())));
@@ -404,6 +416,8 @@ public class Converter {
 		// SYMMETRIC
 		case "io.openems.impl.device.minireadonly.FeneconMiniProductionMeter":
 		case "io.openems.impl.device.minireadonly.FeneconMiniGridMeter":
+		case "Fenecon.Mini.GridMeter":
+		case "Fenecon.Mini.PvMeter":
 		case "io.openems.impl.device.socomec.SocomecMeter":
 		case "Meter.SOCOMEC.DirisA14":
 		case "Meter.SOCOMEC.CountisE24":
@@ -689,6 +703,9 @@ public class Converter {
 			case "Fenecon.Pro.Ess":
 				sum = add(sum, getValue(input, String.format(TOTAL_BATTERY_CHARGE_ENERGY, entry.getKey())));
 				break;
+			case "Fenecon.Mini.Ess":
+				sum = add(sum, getValue(input, String.format(BATTERY_ALLOWED_CHARGING, entry.getKey())));
+				break;
 			default:
 				throw new Exception("Ess-Type not implemented: " + factoryPid);
 			}
@@ -717,6 +734,9 @@ public class Converter {
 			case "io.openems.impl.device.pro.FeneconProEss":
 			case "Fenecon.Pro.Ess":
 				sum = add(sum, getValue(input, String.format(TOTAL_BATTERY_DISCHARGE_ENERGY, entry.getKey())));
+				break;
+			case "Fenecon.Mini.Ess":
+				sum = add(sum, getValue(input, String.format(DISCHARGED_ENERGY, entry.getKey())));
 				break;
 			default:
 				throw new Exception("Ess-Type not implemented: " + factoryPid);
@@ -864,7 +884,22 @@ public class Converter {
 				throw new Exception("Unexpected ValueType (" + type + ") for Meter class " + clazz);
 			}
 			break;
-		// SYMMETRIC
+		case "Fenecon.Mini.PvMeter":
+			// TODO: Fix MSWLSW -> LSWMSW
+			sum = add(sum, getValue(input, String.format(ENERGY, meter.getKey())));
+			break;
+		case "Fenecon.Mini.GridMeter":
+			switch (type) {
+			case POSITIVE:
+				sum = add(sum, getValue(input, String.format(BUY_FROM_GRID_ENERGY, meter.getKey())));
+				break;
+			case NEGATIVE:
+				sum = add(sum, getValue(input, String.format(SELL_TO_GRID_ENERGY, meter.getKey())));
+				break;
+			default:
+				throw new Exception("Unexpected ValueType (" + type + ") for Meter class " + clazz);
+			}
+			break;
 		default:
 			throw new Exception("Unknown Meter class: " + clazz);
 		}
