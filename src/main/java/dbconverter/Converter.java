@@ -89,7 +89,7 @@ public class Converter {
 		result.add(SUM_GRID_SELL_ACTIVE_ENERGY);
 		result.add(SUM_CONSUMPTION_ACTIVE_ENERGY);
 
-		for (String id : new String[] { "ess0", "ess1" }) {
+		for (String id : new String[] { "ess0", "ess1", "ess2", "ess3" }) {
 			result.add(String.format(SOC, id));
 			result.add(String.format(ACTIVE_POWER, id));
 			result.add(String.format(ACTIVE_POWER_L1, id));
@@ -101,7 +101,7 @@ public class Converter {
 			result.add(String.format(DISCHARGED_ENERGY, id));
 		}
 
-		for (String id : new String[] { "meter0", "meter1", "meter2" }) {
+		for (String id : new String[] { "meter0", "meter1", "meter2", "meter3", "meter4" }) {
 			result.add(String.format(ACTIVE_POWER, id));
 			result.add(String.format(ACTIVE_POWER_L1, id));
 			result.add(String.format(ACTIVE_POWER_L2, id));
@@ -320,6 +320,7 @@ public class Converter {
 			String factoryPid = entry.getValue().getFactoryId();
 			switch (factoryPid) {
 			case "io.openems.impl.device.system.asymmetricsymmetriccombinationess.AsymmetricSymmetricCombinationEssNature":
+			case "Ess.Cluster":
 				// ignore
 				break;
 
@@ -359,6 +360,7 @@ public class Converter {
 			String factoryPid = entry.getValue().getFactoryId();
 			switch (factoryPid) {
 			case "io.openems.impl.device.system.asymmetricsymmetriccombinationess.AsymmetricSymmetricCombinationEssNature":
+			case "Ess.Cluster":
 				// ignore
 				break;
 
@@ -421,6 +423,7 @@ public class Converter {
 		case "io.openems.impl.device.socomec.SocomecMeter":
 		case "Meter.SOCOMEC.DirisA14":
 		case "Meter.SOCOMEC.CountisE24":
+		case "Meter.CarloGavazzi.EM300":
 			sum = add(sum, getValue(input, String.format(ACTIVE_POWER, meter.getKey())));
 			break;
 
@@ -697,6 +700,7 @@ public class Converter {
 			String factoryPid = entry.getValue().getFactoryId();
 			switch (factoryPid) {
 			case "io.openems.impl.device.system.asymmetricsymmetriccombinationess.AsymmetricSymmetricCombinationEssNature":
+			case "Ess.Cluster":
 				// ignore
 				break;
 			case "io.openems.impl.device.pro.FeneconProEss":
@@ -729,6 +733,7 @@ public class Converter {
 			String factoryPid = entry.getValue().getFactoryId();
 			switch (factoryPid) {
 			case "io.openems.impl.device.system.asymmetricsymmetriccombinationess.AsymmetricSymmetricCombinationEssNature":
+			case "Ess.Cluster":
 				// ignore
 				break;
 			case "io.openems.impl.device.pro.FeneconProEss":
@@ -873,6 +878,7 @@ public class Converter {
 			break;
 		case "io.openems.impl.device.socomec.SocomecMeter":
 		case "Meter.SOCOMEC.DirisA14":
+		case "Meter.CarloGavazzi.EM300":
 			switch (type) {
 			case POSITIVE:
 				sum = add(sum, multiply(1000, getValue(input, String.format(ACTIVE_POSITIVE_ENERGY, meter.getKey()))));

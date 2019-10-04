@@ -20,16 +20,18 @@ public class App {
 
 	private final static Pattern cliArgPattern = Pattern.compile("^-([^=\\s]+)=(\\S*)$");
 
-	private static int[] FEMS = new int[] { 1167 };
+	private static int[] FEMS = new int[] {361, 1018, 1288, 668, 658, 657, 650,
+			638, 637, 632, 626, 619, 615, 610, 601, 596, 594, 588, 587, 585, 582, 581, 547, 546, 544, 540, 539, 538,
+			536 };
 //	public final static Types TYPE = Types.DESS;
 	public final static Types TYPE = Types.OPENEMS_V1;
 
-//	private static String FROM_DATE = "2019-03-25T00:00:00";
+//	private static String FROM_DATE = "2018-10-30T00:00:00";
 	private static String FROM_DATE = "";
-//	private static String TO_DATE = "2018-10-30T00:00:00";
+//	private static String TO_DATE = "2019-09-30T00:00:00";
 	private static String TO_DATE = "";
 
-	private static int CHUNK_DAYS = 3;
+	private static int CHUNK_DAYS = 1;
 	private static int CHUNK_HOURS = 0;
 
 	private static boolean PRODUCTION = true;
