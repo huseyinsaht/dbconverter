@@ -327,6 +327,7 @@ public class Converter {
 			case "io.openems.impl.device.pro.FeneconProEss":
 			case "Fenecon.Pro.Ess":
 			case "Fenecon.Mini.Ess":
+			case "io.openems.impl.device.minireadonly.FeneconMiniEss":
 				socs.add(getValue(input, String.format(SOC, entry.getKey())));
 				break;
 			default:

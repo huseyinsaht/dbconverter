@@ -19,10 +19,8 @@ import dbconverter.odoo.Odoo;
 public class App {
 
 	private final static Pattern cliArgPattern = Pattern.compile("^-([^=\\s]+)=(\\S*)$");
-
-	private static int[] FEMS = new int[] {361, 1018, 1288, 668, 658, 657, 650,
-			638, 637, 632, 626, 619, 615, 610, 601, 596, 594, 588, 587, 585, 582, 581, 547, 546, 544, 540, 539, 538,
-			536 };
+//	1169, 1168, 459,  !=
+	private static int[] FEMS = new int[] { 458 };
 //	public final static Types TYPE = Types.DESS;
 	public final static Types TYPE = Types.OPENEMS_V1;
 
@@ -31,8 +29,8 @@ public class App {
 //	private static String TO_DATE = "2019-09-30T00:00:00";
 	private static String TO_DATE = "";
 
-	private static int CHUNK_DAYS = 1;
-	private static int CHUNK_HOURS = 0;
+	private static int CHUNK_DAYS = 0;
+	private static int CHUNK_HOURS = 1;
 
 	private static boolean PRODUCTION = true;
 	private static int RETRY_COUNT = 2;
